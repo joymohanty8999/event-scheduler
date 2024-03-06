@@ -63,8 +63,3 @@ class MyEventScheduler:
 
     def event_title_exists(self, title):
         return any(event["title"] == title for event in self.events)
-
-# scheduler = MyEventScheduler()
-# scheduler.add_event("COMP 539 Presentation", "2024-03-10", "Present your Pitch to the class")
-# scheduler.add_event("COMP 646 Class", "2024-03-15") 
-# scheduler.get_events()
