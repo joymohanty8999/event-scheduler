@@ -27,5 +27,7 @@ def main():
     print(message)
     print(event_scheduler.get_events())
 
+    
+
 if __name__ == '__main__':
     main()
