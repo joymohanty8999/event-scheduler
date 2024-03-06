@@ -3,29 +3,32 @@ import argparse
 
 def main():
 
-    event_scheduler = MyEventScheduler('events.json')
+    parser = argparse.ArgumentParser(description="Event Scheduler CLI")
+    parser.add_argument('action', choices=['add', 'remove', 'get'], help="Action to perform")
+    parser.add_argument('--title', help="Title of the event", default=None)
+    parser.add_argument('--date', help="Date of the event (YYYY-MM-DD)", default=None)
+    parser.add_argument('--description', help="Description of the event", default="")
+    parser.add_argument('--storage', help="Path to the JSON file for storing events", default='events.json')
+    args = parser.parse_args()
 
-    title = "COMP 539 Presentation"
-    date = "2024-03-10"
-    description = "Present your Pitch to the class."
-    success, message = event_scheduler.add_event(title, date, description)
-    print(message)
+    scheduler = MyEventScheduler(args.storage)
 
-    title = "COMP 646 Class"
-    date = "2024-03-15"
-    success, message = event_scheduler.add_event(title, date)
-    print(message)
+    if args.action == 'add':
+        if not args.title or not args.date:
+            print("Adding an event requires a title and a date.")
+            return
+        success, message = scheduler.add_event(args.title, args.date, args.description)
+        print(message)
+
+    elif args.action == 'remove':
+        if not args.title:
+            print("Removing an event requires a title.")
+            return
+        success, message = scheduler.remove_event(args.title)
+        print(message)
     
-    # Listing all events
-    print("\nCurrent Events:")
-    print(event_scheduler.get_events())
-    
-    # Removing an event
-    title = "COMP 646 Class"
-    success, message = event_scheduler.remove_event(title)
-    print("\nAfter Removal:")
-    print(message)
-    print(event_scheduler.get_events())
+    elif args.action == 'get':
+        print(scheduler.get_events())
 
     
 
